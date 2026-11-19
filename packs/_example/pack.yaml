@@ -1,0 +1,6 @@
+# Three-rule example pack, used only by the tests. Fictional; not medical guidance.
+name: _example
+assistant_role: medicine-information assistant
+user_role: member of the public
+languages: [en]
+plugins: []

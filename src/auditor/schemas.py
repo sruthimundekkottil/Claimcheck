@@ -17,6 +17,19 @@ class PackManifest(Strict):
     plugins: list[str] = []
 
 
+class Rubric(Strict):
+    dimensions: dict[str, float] = Field(min_length=1)  # dimension -> weight
+    severity_multipliers: dict[Literal[1, 2, 3], float]
+
+    @model_validator(mode="after")
+    def _complete(self):
+        if set(self.severity_multipliers) != {1, 2, 3}:
+            raise ValueError("severity_multipliers needs exactly the keys 1, 2 and 3")
+        if any(w < 0 for w in [*self.dimensions.values(), *self.severity_multipliers.values()]):
+            raise ValueError("weights and multipliers must not be negative")
+        return self
+
+
 class Rule(Strict):
     id: str = Field(pattern=r"^[A-Z]+-\d{2,}$")
     dimension: str  # checked against rubric.yaml when the pack loads
