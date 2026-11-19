@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Gateway disk cache
+runs/cache.sqlite
+.pytest_tmp/

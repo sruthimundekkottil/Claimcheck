@@ -1,0 +1,22 @@
+# The only place model ids and rate limits appear.
+# Free-tier ids and limits change without notice: check each provider's console before a large run.
+
+retry:
+  attempts: 3          # tries per model before failing over to the next one
+  backoff_seconds: 2   # doubled after each failed try
+
+providers:
+  gemini:
+    base_url: https://generativelanguage.googleapis.com/v1beta/openai
+    api_key_env: GEMINI_API_KEY
+    requests_per_minute: 10
+  groq:
+    base_url: https://api.groq.com/openai/v1
+    api_key_env: GROQ_API_KEY
+    requests_per_minute: 30
+
+# Role name -> models to try in order (first is primary, the rest are failover).
+models:
+  judge:
+    - {provider: gemini, id: gemini-2.5-flash}
+    - {provider: groq, id: llama-3.3-70b-versatile}
